@@ -5,8 +5,7 @@ using UnityEngine;
 public class BishopMovement : BaseMovement
 {
     public BishopMovement(PieceColor color, int x, int y) : base(color, x, y) { }
-    Vector2Int[] offsets =
-{
+    readonly Vector2Int[] offsets = {
         new(1, -1), new(1, 1), new(-1, 1), new(-1, -1)
     };
 
@@ -38,18 +37,14 @@ public class BishopMovement : BaseMovement
                 {
                     if(!passed)
                     {
-                        attackMap[xPos, yPos] = encountered.Color != Color; // 적이면 상대 기물위치까지 공격맵에 포함시킨다.
+                        attackMap[xPos, yPos] = true;
                         passed = true;
                         pinnerCandidate = encountered;
                     }
                     else
                     {
-                        if (encountered is KingMovement && encountered.Color != Color)
-                        {
+                        if (encountered is KingMovement && encountered.Color == pinnerCandidate.Color)
                             kingPinner = pinnerCandidate;
-                            Debug.Log($"KINGPINNER = ({kingPinner.x}, {kingPinner.y})");
-                        }
-
                         break;
                     }
                 }

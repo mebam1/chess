@@ -11,4 +11,9 @@ public class ChessDebugger : MonoBehaviour
         foreach (var c in t.Availables)
             Debug.Log(c);
     }
+
+    public void Print()
+    {
+        Debug.Log("UI DEBUG");
+    }
 }

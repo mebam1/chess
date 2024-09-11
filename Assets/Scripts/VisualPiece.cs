@@ -2,8 +2,8 @@
 
 public class VisualPiece : MonoBehaviour
 {
-    //public delegate void DieHandler(VisualPiece diedVisualPiece);
-    //public event DieHandler OnDie;
+    public delegate void DieHandler(VisualPiece diedVisualPiece);
+    public event DieHandler OnDie;
 
     public void Move(Vector2Int cell)
     {
@@ -22,7 +22,8 @@ public class VisualPiece : MonoBehaviour
 
     public void Die()
     {
-        //OnDie?.Invoke(this);
+        OnDie?.Invoke(this);
+        Debug.Log($"I am dead: {gameObject.name}");
         Destroy(gameObject);
     }
 

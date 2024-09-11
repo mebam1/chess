@@ -1,3 +1,4 @@
+using Command;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -6,11 +7,12 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
 {
     [SerializeField] GameObject pIndicator;
     [SerializeField] VisualPieceSet[] visualPieceSets;
+    [SerializeField] PromotionTab promotionTab;
     IObjectPool<GameObject> indicatorPool;
 
-    //BaseMovement.PieceColor turn = BaseMovement.PieceColor.BLACK;
     BaseMovement focusedPiece;
     List<GameObject> showingIndicators = new();
+    public PromotionTab PromotionTab => promotionTab;
 
     void Start()
     {
@@ -18,7 +20,15 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
         visualPieceSets[1].Init(BaseMovement.PieceColor.BLACK); 
         GridSelector.Instance.OnSelected -= OnGridSelected;
         GridSelector.Instance.OnSelected += OnGridSelected;
+        ChessRule.Instance.OnGameEnded -= OnGameEnded;
+        ChessRule.Instance.OnGameEnded += OnGameEnded;
         StartNewTurn();
+    }
+
+    void OnGameEnded(ChessRule.GameWinner winner)
+    {
+        ChessRule.Instance.OnGameEnded -= OnGameEnded;
+        GridSelector.Instance.OnSelected -= OnGridSelected;
     }
 
     protected override void Init()
@@ -33,6 +43,8 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
             x => Destroy(x), // On Destroy
             maxSize: 32
         );
+
+        promotionTab.gameObject.SetActive(false);
     }
 
     void StartNewTurn()
@@ -55,18 +67,24 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
             {
                 HideAvailables();
                 focusedPiece = null;
+                GridSelector.Instance.OnSelected -= OnGridSelected;
+                command.Last.OnDo += OnCommandEnd;
                 command.Do();
-                Debug.Log("command do : " + command.Info);
-                StartNewTurn();
             }
         }
         else
         {
             HideAvailables();
             focusedPiece = selected;
-            Debug.Log($"Selected {focusedPiece}");
             ShowAvaliables();
         }
+    }
+
+    void OnCommandEnd()
+    {
+        StartNewTurn();
+        GridSelector.Instance.OnSelected -= OnGridSelected;
+        GridSelector.Instance.OnSelected += OnGridSelected;
     }
 
     void ShowAvaliables()
@@ -86,4 +104,6 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
             indicatorPool.Release(indicator);
         showingIndicators.Clear();
     }
+
+    public VisualPieceSet GetPieceSet(BaseMovement.PieceColor color) => visualPieceSets[(int)color];
 }

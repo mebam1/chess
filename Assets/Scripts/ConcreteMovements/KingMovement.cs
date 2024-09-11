@@ -1,5 +1,6 @@
 ﻿using Command;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class KingMovement : BaseMovement
@@ -13,6 +14,7 @@ public class KingMovement : BaseMovement
 
     public override void UpdateMap()
     {
+        kingPinner = null;
         System.Array.Clear(attackMap, 0, attackMap.Length);
 
         foreach(var offset in Offsets)
@@ -30,20 +32,31 @@ public class KingMovement : BaseMovement
 
         var opposite = ChessRule.Instance.GetOppositePieceSet(Color);
         var friendly = ChessRule.Instance.GetPieceSet(Color);
-
+        var attackers = opposite.GetAttackers(x, y);
+        var temp = new List<Vector2Int>();
+        
         foreach (var offset in Offsets)
         {
             int xPos = offset.x + x, yPos = offset.y + y;
-            if (IsInsideOfBoard(xPos, yPos) && friendly.LocationMap[xPos, yPos] == null && opposite.GetAttackers(xPos, yPos).Count == 0)
-                AddMoveOrAttackCommand(xPos, yPos, opposite, friendly);
+            if (IsInsideOfBoard(xPos, yPos) && friendly.LocationMap[xPos, yPos] == null)
+                temp.Add(new Vector2Int(xPos, yPos));
         }
 
-        /*
+        IEnumerable<Vector2Int> res = temp.AsEnumerable();
+
+        foreach (var attacker in attackers)
+        {
+            var line = GetLine(x, y, attacker.x, attacker.y);
+            res = res.Intersect(line);
+        }
+
+        availables.AddRange(res);
+
         // 캐슬링 조건 1. 왕이 이전에 움직인 적 없을 것
-        
+
         if (IsFirstMove)
         {
-            foreach(var rook in friendly.Rooks)
+            foreach(var rook in friendly.GetList<RookMovement>())
             {
                 // 캐슬링 조건 2. 캐슬링 대상이 될 룩은 이전에 움직인 적 없을 것.
                 // 캐슬링 조건 3. 캐슬링 대상이 될 룩은 왕과 같은 행에 있을 것.
@@ -81,20 +94,12 @@ public class KingMovement : BaseMovement
                     {
                         // 캐슬링 조건 만족.
                         var cell = new Vector2Int(x + xOffset * 2, y);
-
-                        IGameCommand command = new Castling
-                            (
-                                new Move(this, cell.x, y),
-                                new Move(this, rook.x - xOffset * (isKingSideCastling ? 2 : 3), y),
-                                isKingSideCastling
-                            );
-
+                        var castling = new Move(this, cell.x, y, new Move(rook, rook.x - xOffset * (isKingSideCastling ? 2 : 3), y));
                         availables.Add(cell);
-                        availableCommands.Add(cell, command);
+                        availableCommands.Add(cell, castling);
                     }
                 }
             }
         }
-        */
     }
 }

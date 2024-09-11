@@ -21,7 +21,8 @@ public class GridSelector : Singleton<GridSelector>
             {
                 Vector3 point = hit.point;
                 var selectedGrid = new Vector2Int(Mathf.RoundToInt(point.x), Mathf.RoundToInt(point.z));
-                OnSelected?.Invoke(selectedGrid);
+                if (IsInsideOfBoard(selectedGrid))
+                    OnSelected?.Invoke(selectedGrid);
             }
         }
     }
@@ -32,4 +33,6 @@ public class GridSelector : Singleton<GridSelector>
         var rot = (turn == BaseMovement.PieceColor.WHITE) ? new Vector3(90f, 0f, 0f) : new Vector3(90f, 180f, 0f);
         mainCam.transform.rotation = Quaternion.Euler(rot);
     }
+
+    bool IsInsideOfBoard(Vector2Int pos) => pos.x >= 0 && pos.y >= 0 && pos.x < 8 && pos.y < 8;
 }

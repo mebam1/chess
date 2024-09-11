@@ -11,6 +11,11 @@ public class ChessRule : Singleton<ChessRule>
     public PieceSet GetPieceSet(BaseMovement.PieceColor color) => pieceSets[(int)color];
     public PieceSet GetOppositePieceSet(BaseMovement.PieceColor color) => pieceSets[((int)color + 1) % 2];
     public BaseMovement.PieceColor Turn => turn;
+    public enum GameWinner { WHITE, BLACK, DRAW }
+
+    public delegate void GameEndHandler(GameWinner winner);
+    public event GameEndHandler OnGameEnded;
+
 
     protected override void Init()
     {
@@ -38,5 +43,21 @@ public class ChessRule : Singleton<ChessRule>
     {
         turn = BaseMovement.PieceColor.WHITE == turn ? BaseMovement.PieceColor.BLACK : BaseMovement.PieceColor.WHITE;
         UpdateMap();
+        var turnPlayer = GetPieceSet(turn);
+        var opposite = GetOppositePieceSet(turn);
+        var king = turnPlayer.King;
+        int checker = opposite.GetAttackers(king.x, king.y).Count;
+
+        if (turnPlayer.AvailableCount == 0)
+        {
+            GameWinner winner;
+            if (checker == 0) // 스테일메이트 -> 무승부
+                winner = GameWinner.DRAW;
+            else // 체크메이트 -> turnPlayer가 아닌 상대방의 승리
+                winner = turn == BaseMovement.PieceColor.BLACK ? GameWinner.WHITE : GameWinner.BLACK;
+            OnGameEnded?.Invoke(winner);
+        }
     }
+
+    
 }

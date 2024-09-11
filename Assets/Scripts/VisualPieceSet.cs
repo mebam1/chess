@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,80 +13,91 @@ public class VisualPieceSet
     [SerializeField] VisualPiece pKnightVisual;
 
     VisualPiece kingVisual;
-    List<VisualPiece> queenVisual = new();
-    List<VisualPiece> pawnVisual = new();
-    List<VisualPiece> bishopVisual = new();
-    List<VisualPiece> rookVisual = new();
-    List<VisualPiece> knightVisual = new();
+    List<VisualPiece> visuals = new();
+    Dictionary<Type, VisualPiece> prefabDict;
 
     public void Init(BaseMovement.PieceColor color)
     {
+        InitPrefabDict();
         var pieceSet = ChessRule.Instance.GetPieceSet(color);
         kingVisual = GameObject.Instantiate(pKingVisual);
         pieceSet.King.BindVisualizer(kingVisual);
+        visuals.Add(kingVisual);
 
         for(int i = 0;i< PieceSet.INIT_QUEEN_NUM; i++)
         {
             var visual = GameObject.Instantiate(pQueenVisual);
-            queenVisual.Add(visual);
-            var piece = pieceSet.Queens[i];
+            visuals.Add(visual);
+            var piece = pieceSet.GetList<QueenMovement>()[i];
             piece.BindVisualizer(visual);
         }
 
         for (int i = 0; i < PieceSet.INIT_PAWN_NUM; i++)
         {
             var visual = GameObject.Instantiate(pPawnVisual);
-            pawnVisual.Add(visual);
-            var piece = pieceSet.Pawns[i];
+            visuals.Add(visual);
+            var piece = pieceSet.GetList<PawnMovement>()[i];
             piece.BindVisualizer(visual);
         }
 
         for (int i = 0; i < PieceSet.INIT_BISHOP_NUM; i++)
         {
             var visual = GameObject.Instantiate(pBishopVisual);
-            bishopVisual.Add(visual);
-            var piece = pieceSet.Bishops[i];
+            visuals.Add(visual);
+            var piece = pieceSet.GetList<BishopMovement>()[i];
             piece.BindVisualizer(visual);
         }
 
         for (int i = 0; i < PieceSet.INIT_ROOK_NUM; i++)
         {
             var visual = GameObject.Instantiate(pRookVisual);
-            rookVisual.Add(visual);
-            var piece = pieceSet.Rooks[i];
+            visuals.Add(visual);
+            var piece = pieceSet.GetList<RookMovement>()[i];
             piece.BindVisualizer(visual);
         }
 
         for (int i = 0; i < PieceSet.INIT_KNIGHT_NUM; i++)
         {
             var visual = GameObject.Instantiate(pKnightVisual);
-            knightVisual.Add(visual);
-            var piece = pieceSet.Knights[i];
+            visuals.Add(visual);
+            var piece = pieceSet.GetList<KnightMovement>()[i];
             piece.BindVisualizer(visual);
         }
 
+        foreach (var v in visuals)
+            v.OnDie += Remove;
+    }
 
-        //kingVisual.OnDie += x => kingVisual = null;
+    void Remove(VisualPiece x) => visuals.Remove(x);
 
-        /*
-        foreach (var piece in pawnVisual)
-            piece.OnDie += x => pawnVisual.Remove(x);
-        foreach (var piece in bishopVisual)
-            piece.OnDie += x => bishopVisual.Remove(x);
-        foreach (var piece in rookVisual)
-            piece.OnDie += x => rookVisual.Remove(x);
-        foreach (var piece in knightVisual)
-            piece.OnDie += x => knightVisual.Remove(x);
-        */
+    void InitPrefabDict()
+    {
+        prefabDict = new()
+        {
+            { typeof(KingMovement), pKingVisual },
+            { typeof(QueenMovement), pQueenVisual },
+            { typeof(PawnMovement), pPawnVisual }, 
+            { typeof(BishopMovement), pBishopVisual },
+            { typeof(RookMovement), pRookVisual },
+            { typeof(KnightMovement), pKnightVisual },
+        };
     }
 
     public void StartNewTurn()
     {
-        kingVisual.OnNewTurnStart();
-        queenVisual.ForEach(x => x.OnNewTurnStart());
-        pawnVisual.ForEach(x => x.OnNewTurnStart());
-        bishopVisual.ForEach(x => x.OnNewTurnStart());
-        rookVisual.ForEach(x => x.OnNewTurnStart());
-        knightVisual.ForEach(x => x.OnNewTurnStart());
+        foreach (var v in visuals)
+        {
+            Debug.Assert(v != null);
+            v.OnNewTurnStart();
+        }
+    }
+
+    public void BindVisualizer(BaseMovement piece)
+    {
+        var prefab = prefabDict[piece.GetType()];
+        var visual = GameObject.Instantiate(prefab);
+        visuals.Add(visual);
+        visual.OnDie += Remove;
+        piece.BindVisualizer(visual);
     }
 }
