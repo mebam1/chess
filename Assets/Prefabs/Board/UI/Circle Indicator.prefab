@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4138554154218703058}
   - component: {fileID: 644266056757518090}
   m_Layer: 0
-  m_Name: Circle_Indicator
+  m_Name: Circle Indicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -19,9 +19,9 @@ MonoBehaviour:
     rid: 6635661709307805696
   m_Scenes:
   - m_enabled: 1
-    m_path: Assets/Scenes/Main.unity
-  - m_enabled: 1
     m_path: Assets/Scenes/Loading.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Main.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings:
@@ -67,8 +67,8 @@ MonoBehaviour:
     - line: '|   m_SplashScreenLogos: []'
     - line: '|   m_VirtualRealitySplashScreen: {instanceID: 0}'
     - line: '|   m_HolographicTrackingLossScreen: {instanceID: 0}'
-    - line: '|   defaultScreenWidth: 1280'
-    - line: '|   defaultScreenHeight: 720'
+    - line: '|   defaultScreenWidth: 1920'
+    - line: '|   defaultScreenHeight: 1080'
     - line: '|   defaultScreenWidthWeb: 960'
     - line: '|   defaultScreenHeightWeb: 600'
     - line: '|   m_StereoRenderingPath: 0'
@@ -131,7 +131,7 @@ MonoBehaviour:
     - line: '|   xboxEnableFitness: 0'
     - line: '|   visibleInBackground: 1'
     - line: '|   allowFullscreenSwitch: 1'
-    - line: '|   fullscreenMode: 3'
+    - line: '|   fullscreenMode: 1'
     - line: '|   xboxSpeechDB: 0'
     - line: '|   xboxEnableHeadOrientation: 0'
     - line: '|   xboxEnableGuest: 0'

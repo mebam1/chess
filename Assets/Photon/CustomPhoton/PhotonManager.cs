@@ -1,6 +1,7 @@
 using Photon.Realtime;
 using Photon.Pun;
 using UnityEngine;
+using System.Collections;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
@@ -18,7 +19,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         Debug.Log($"[OnJoinedLobby] PhotonNetwork.InLobby: {PhotonNetwork.InLobby}");
-        PhotonNetwork.JoinRandomRoom();
     }
     public override void OnConnectedToMaster()
     {
@@ -29,8 +29,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         Debug.Log($"[OnJoinRandomFailed] code({returnCode}): {message}");
-        RoomOptions roomOption = new() { MaxPlayers = 2, IsOpen = true, IsVisible = true };
-        PhotonNetwork.CreateRoom("My Room", roomOption);
+
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
@@ -55,7 +54,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Debug.Log($"[OnPlayerEnteredRoom] Entered Player Name: {newPlayer.NickName}\n" +
             $"Player Actor Number: {newPlayer.ActorNumber}");
 
-        if (PhotonNetwork.IsMasterClient)
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2 && PhotonNetwork.IsMasterClient)
+        {
             PhotonNetwork.LoadLevel("Main");
+        }
     }
 }
