@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 namespace Command
 {
@@ -31,6 +32,7 @@ namespace Command
             mover.y = toY;
             mover.MoveVisual(new Vector2Int(toX, toY));
             mover.IsFirstMove = false;
+            
             afterMove?.Do();
             OnDo?.Invoke();
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class JumperMovement : BaseMovement
 {
     public JumperMovement(PieceColor color, int x, int y) : base(color, x, y) { }
-    protected abstract IReadOnlyList<Vector2Int> JumpOffsets { get; }
+    public abstract IReadOnlyList<Vector2Int> JumpOffsets { get; }
 
     public override void UpdateMap()
     {

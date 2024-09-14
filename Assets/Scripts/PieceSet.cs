@@ -5,10 +5,10 @@ using UnityEngine;
 public class PieceSet
 {
     public const int INIT_QUEEN_NUM = 1;
-    public const int INIT_PAWN_NUM = 0; //8;
-    public const int INIT_BISHOP_NUM = 0; //2;
+    public const int INIT_PAWN_NUM = 8;
+    public const int INIT_BISHOP_NUM = 2;
     public const int INIT_ROOK_NUM = 2;
-    public const int INIT_KNIGHT_NUM = 0; //2;
+    public const int INIT_KNIGHT_NUM = 2;
 
     BaseMovement king;
     List<BaseMovement> pieces = new(1 + INIT_QUEEN_NUM + INIT_PAWN_NUM + INIT_BISHOP_NUM + INIT_ROOK_NUM + INIT_KNIGHT_NUM);
@@ -40,15 +40,15 @@ public class PieceSet
         int pawnY = GetProperY(1);
         king = new KingMovement(color, 4, bottomY);
         pieces.Add(king);
-        //for (int i = 0; i < INIT_PAWN_NUM; i++)
-            //pieces.Add(new PawnMovement(color, i, pawnY));
+        for (int i = 0; i < INIT_PAWN_NUM; i++)
+            pieces.Add(new PawnMovement(color, i, pawnY));
         pieces.Add(new QueenMovement(color, 3, bottomY));
-        //pieces.Add(new BishopMovement(color, 2, bottomY));
-        //pieces.Add(new BishopMovement(color, 5, bottomY));
+        pieces.Add(new BishopMovement(color, 2, bottomY));
+        pieces.Add(new BishopMovement(color, 5, bottomY));
         pieces.Add(new RookMovement(color, 0, bottomY));
         pieces.Add(new RookMovement(color, 7, bottomY));
-        //pieces.Add(new KnightMovement(color, 1, bottomY));
-        //pieces.Add(new KnightMovement(color, 6, bottomY));
+        pieces.Add(new KnightMovement(color, 1, bottomY));
+        pieces.Add(new KnightMovement(color, 6, bottomY));
 
 
         int GetProperY(int yPos) => (color == BaseMovement.PieceColor.BLACK) ? (7 - yPos) : yPos;

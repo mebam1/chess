@@ -8,7 +8,7 @@ namespace Command
         BaseMovement victim;
         int toX, toY;
         int fromX, fromY;
-        IGameCommand afterAttack; // this chained command does not invoke StartNewTurn.
+        IGameCommand afterAttack;
         bool isFirstMove;
         public IGameCommand Last => afterAttack?.Last ?? this;
 
@@ -35,16 +35,21 @@ namespace Command
             ChessRule.Instance.GetPieceSet(victim.Color).Remove(victim);
             victim.RemoveVisual();
             attacker.MoveVisual(new Vector2Int(toX, toY));
-            isFirstMove = false;
+            isFirstMove = attacker.IsFirstMove;
             afterAttack?.Do();
             OnDo?.Invoke();
         }
 
         public void UnDo()
         {
-            //throw new System.NotImplementedException();
             attacker.IsFirstMove = isFirstMove;
-            // create victim visual at (toX, toY).
+            attacker.x = fromX;
+            attacker.y = fromY;
+            attacker.SetVisualPositionImmediately(fromX, fromY);
+            victim.x = toX;
+            victim.y = toY;
+            var pieceSet = ChessVisualizer.Instance.GetPieceSet(victim.Color);
+            pieceSet.BindVisualizer(victim);
             afterAttack?.UnDo();
         }
     }

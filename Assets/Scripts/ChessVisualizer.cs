@@ -1,4 +1,6 @@
 using Command;
+using Photon.Realtime;
+using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -33,8 +35,9 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
 
     protected override void Init()
     {
-        base.Init();
         shouldDestroyOnSceneChange = true;
+        base.Init();
+        
         indicatorPool = new ObjectPool<GameObject>
         (
             () => Instantiate(pIndicator), // Create
@@ -51,7 +54,6 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
     {
         focusedPiece = null;
         ChessRule.Instance.StartNewTurn();
-        GridSelector.Instance.StartNewTurn();
         visualPieceSets[0].StartNewTurn();
         visualPieceSets[1].StartNewTurn();
     }

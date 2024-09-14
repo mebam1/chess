@@ -19,8 +19,8 @@ public class ChessRule : Singleton<ChessRule>
 
     protected override void Init()
     {
-        base.Init();
         shouldDestroyOnSceneChange = true;
+        base.Init();
     }
 
 
@@ -58,6 +58,4 @@ public class ChessRule : Singleton<ChessRule>
             OnGameEnded?.Invoke(winner);
         }
     }
-
-    
 }

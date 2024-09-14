@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 namespace Command
 {
@@ -7,6 +8,7 @@ namespace Command
         int toX, toY;
         int fromX, fromY;
         BaseMovement target;
+        BaseMovement promotioned;
         public IGameCommand Last => this;
 
         public Promotion(BaseMovement target, int toX, int toY, int fromX, int fromY)
@@ -23,17 +25,19 @@ namespace Command
         public void Do()
         {
             var promotionTab = ChessVisualizer.Instance.PromotionTab;
-            promotionTab.gameObject.SetActive(true);
-            promotionTab.SetColor(target.Color);
             promotionTab.OnSelected -= PromotionTab_OnSelected;
             promotionTab.OnSelected += PromotionTab_OnSelected;
+            if (PhotonNetwork.IsMasterClient && (target.Color == BaseMovement.PieceColor.BLACK)) return;
+            if (!PhotonNetwork.IsMasterClient && (target.Color == BaseMovement.PieceColor.WHITE)) return;
+            promotionTab.gameObject.SetActive(true);
+            promotionTab.SetColor(target.Color);
         }
 
         void PromotionTab_OnSelected(BaseMovement createdInstance)
         {
+            promotioned = createdInstance;
             var promotionTab = ChessVisualizer.Instance.PromotionTab;
             promotionTab.OnSelected -= PromotionTab_OnSelected;
-            Debug.Log("PromotionTab_OnSelected");
             promotionTab.gameObject.SetActive(false);
 
             // insert created instance to chess board. create visual to show instance.
@@ -52,7 +56,5 @@ namespace Command
         {
             throw new System.NotImplementedException();
         }
-
-
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine;
 public abstract class BaseMovement
 {
     #region variables
-    public enum PieceColor { WHITE, BLACK };
+    public enum PieceColor { WHITE, BLACK, COUNT };
     PieceColor color;
     public PieceColor Color => color;
     public int x;
@@ -61,6 +61,7 @@ public abstract class BaseMovement
             {
                 var pinLine = GetLine(kx, ky, thisAttacker.x, thisAttacker.y);
                 pinLine.Remove(new Vector2Int(x, y));
+
                 foreach (var cell in pinLine)
                 {
                     if (CanMoveOrAttack(cell.x, cell.y))

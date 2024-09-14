@@ -16,5 +16,5 @@ public class KnightMovement : JumperMovement
         new(2, -1)
     };
 
-    protected override IReadOnlyList<Vector2Int> JumpOffsets => offset;
+    public override IReadOnlyList<Vector2Int> JumpOffsets => offset;
 }

@@ -1,19 +1,28 @@
+using Photon.Pun;
 using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ChessDebugger : MonoBehaviour
 {
-    public int x;
-    public int y;
-
-    public void PrintCell()
+    private void Start()
     {
-        var t = ChessRule.Instance.LocationMap[x, y];
-        foreach (var c in t.Availables)
-            Debug.Log(c);
+        Debug.Log("Scene Start!");
     }
 
-    public void Print()
+    public void StartNewGame()
     {
-        Debug.Log("UI DEBUG");
+        StartCoroutine(ReStartScene());
+    }
+
+    IEnumerator ReStartScene()
+    {
+        PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
+        while (!PhotonNetwork.IsMasterClient)
+            yield return null;
+
+        Debug.Log($"[ReStartScene] PlayerCount: {PhotonNetwork.CurrentRoom.PlayerCount}");
+        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.LoadLevel("Loading");
     }
 }

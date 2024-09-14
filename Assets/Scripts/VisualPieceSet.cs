@@ -65,7 +65,10 @@ public class VisualPieceSet
         }
 
         foreach (var v in visuals)
+        {
             v.OnDie += Remove;
+            v.SetRotation();
+        }
     }
 
     void Remove(VisualPiece x) => visuals.Remove(x);
@@ -96,6 +99,7 @@ public class VisualPieceSet
     {
         var prefab = prefabDict[piece.GetType()];
         var visual = GameObject.Instantiate(prefab);
+        visual.SetRotation();
         visuals.Add(visual);
         visual.OnDie += Remove;
         piece.BindVisualizer(visual);

@@ -1,3 +1,5 @@
+using Photon.Pun;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -50,5 +52,18 @@ public class ResultTab : MonoBehaviour
 #endif
     }
 
-    void Retry() => SceneManager.LoadScene(1);
+    void Retry()
+    {
+        StartCoroutine(ReStartScene());
+    }
+
+    IEnumerator ReStartScene()
+    {
+        PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
+        while (!PhotonNetwork.IsMasterClient)
+            yield return null;
+
+        Debug.Log($"[ReStartScene] PlayerCount: {PhotonNetwork.CurrentRoom.PlayerCount}");
+        PhotonNetwork.LoadLevel("Loading");
+    }
 }

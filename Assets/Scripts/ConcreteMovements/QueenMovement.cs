@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class QueenMovement : BaseMovement
+public class QueenMovement : LinearMovement
 {
     // used for ease of implementation.
     RookMovement rookInternal;
@@ -11,6 +13,8 @@ public class QueenMovement : BaseMovement
         rookInternal = new RookMovement(color, x, y);
         bishopInternal = new BishopMovement(color, x, y);
     }
+
+    public override IReadOnlyList<Vector2Int> Offsets => rookInternal.Offsets.Concat(bishopInternal.Offsets).ToList();
 
     public override void UpdateMap()
     {
