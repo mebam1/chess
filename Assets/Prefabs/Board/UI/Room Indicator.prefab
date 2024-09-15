@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7096077259523208573}
   - component: {fileID: 5843018448987016221}
+  - component: {fileID: 7107636629596839039}
   m_Layer: 5
   m_Name: Room Indicator
   m_TagString: Untagged
@@ -83,6 +84,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7107636629596839039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387209424184212569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474f5f340d6806d48bb65af87c8c5fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomNameTMP: {fileID: 4808325083996211216}
+  button: {fileID: 5843018448987016221}
 --- !u!1 &6984770140319088363
 GameObject:
   m_ObjectHideFlags: 0

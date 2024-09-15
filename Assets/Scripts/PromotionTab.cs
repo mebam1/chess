@@ -10,12 +10,19 @@ public class PromotionTab : MonoBehaviour
     [SerializeField] Button selectBishop;
     [SerializeField] Button selectKnight;
 
+    [SerializeField] Image[] promotionPiecesImage;
+
     public delegate void PromotionSelectionHandler(BaseMovement createdInstance);
     public event PromotionSelectionHandler OnSelected;
     BaseMovement.PieceColor color;
     PhotonView photonView;
 
-    public void SetColor(BaseMovement.PieceColor color) => this.color = color;
+    public void SetColor(BaseMovement.PieceColor color)
+    {
+        this.color = color;
+        foreach(var piece in promotionPiecesImage)
+            piece.color = color == BaseMovement.PieceColor.WHITE ? Color.white : new Color(0.1960784f, 0.1960784f, 0.1960784f);
+    }
 
     void Awake()
     {

@@ -10,7 +10,8 @@ public class InfoTab : MonoBehaviourPunCallbacks
     [SerializeField] TMP_InputField userNameInputField;
     [SerializeField] TMP_InputField roomNameInputField;
     [SerializeField] RectTransform scrollviewContent;
-    [SerializeField] Button pRoomIndicator;
+    [SerializeField] RoomIndicator pRoomIndicator;
+    [SerializeField] TextMeshProUGUI CreatedRoomNameTMP;
     string roomName = string.Empty;
     Dictionary<string, GameObject> roomIndicators = new();
 
@@ -39,6 +40,7 @@ public class InfoTab : MonoBehaviourPunCallbacks
     {
         RoomOptions roomOption = new() { MaxPlayers = 2, IsOpen = true, IsVisible = true };
         PhotonNetwork.CreateRoom(roomName, roomOption);
+        CreatedRoomNameTMP.SetText(roomName);
     }
 
     public void JoinRandomRoom()
@@ -72,7 +74,8 @@ public class InfoTab : MonoBehaviourPunCallbacks
             {
                 var target = Instantiate(pRoomIndicator, scrollviewContent);
                 string thisRoom = roomInfo.Name;
-                target.onClick.AddListener(()=>PhotonNetwork.JoinRoom(thisRoom));
+                target.SetName(thisRoom);
+                target.AddListener(()=>PhotonNetwork.JoinRoom(thisRoom));
                 roomIndicators.Add(roomInfo.Name, target.gameObject);
             }
         }

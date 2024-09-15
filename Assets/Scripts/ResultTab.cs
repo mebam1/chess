@@ -11,6 +11,7 @@ public class ResultTab : MonoBehaviour
     [SerializeField] Button exitGame;
     [SerializeField] Image winnerImg;
     [SerializeField] TextMeshProUGUI winnerTxt;
+    
 
     void Start()
     {
@@ -25,21 +26,32 @@ public class ResultTab : MonoBehaviour
     {
         gameObject.SetActive(true);
         ChessRule.Instance.OnGameEnded -= OnGameEnded;
+        var userColor = PhotonNetwork.IsMasterClient ? BaseMovement.PieceColor.WHITE : BaseMovement.PieceColor.BLACK;
 
         switch (winner)
         {
             case ChessRule.GameWinner.WHITE:
                 winnerImg.color = Color.white;
-                winnerTxt.SetText("White wins");
                 break;
             case ChessRule.GameWinner.BLACK:
                 winnerImg.color = new Color(0.1960784f, 0.1960784f, 0.1960784f); // grey
-                winnerTxt.SetText("Black wins");
                 break;
             case ChessRule.GameWinner.DRAW:
                 winnerImg.color = Color.clear;
                 winnerTxt.SetText("Draw");
-                break;
+                return;
+        }
+
+        try
+        {
+            if ((int)userColor == (int)winner)
+                winnerTxt.SetText($"Winner: {PhotonNetwork.NickName}");
+            else
+                winnerTxt.SetText($"Winner: {PhotonNetwork.PlayerListOthers[0].NickName}");
+        }
+        catch(System.IndexOutOfRangeException indexException)
+        {
+            Debug.LogWarning(indexException);
         }
     }
 
