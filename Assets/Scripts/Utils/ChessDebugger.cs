@@ -4,15 +4,20 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class ChessDebugger : MonoBehaviour
-{
-    private void Start()
-    {
-        Debug.Log("Scene Start!");
-    }
-
+{ 
+    /// <summary>Reload this scene.</summary>
     public void StartNewGame()
     {
-        StartCoroutine(ReStartScene());
+        bool isNetWorkGame = GameMode.Instance.Mode == GameMode.GameModeType.Photon;
+        if (isNetWorkGame)
+        {
+            StartCoroutine(ReStartScene());
+        }
+        else
+        {
+            int current = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(current); 
+        }
     }
 
     IEnumerator ReStartScene()
@@ -21,7 +26,7 @@ public class ChessDebugger : MonoBehaviour
         while (!PhotonNetwork.IsMasterClient)
             yield return null;
 
-        Debug.Log($"[ReStartScene] PlayerCount: {PhotonNetwork.CurrentRoom.PlayerCount}");
+        //Debug.Log($"[ReStartScene] PlayerCount: {PhotonNetwork.CurrentRoom.PlayerCount}");
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.LoadLevel("Loading");
     }

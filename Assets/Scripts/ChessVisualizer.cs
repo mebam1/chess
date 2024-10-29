@@ -4,6 +4,8 @@ using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using System.Drawing;
+using Unity.VisualScripting;
 
 public class ChessVisualizer : Singleton<ChessVisualizer>
 {
@@ -16,21 +18,35 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
     List<GameObject> showingIndicators = new();
     public PromotionTab PromotionTab => promotionTab;
 
+    bool CanRecieveInput
+    {
+        set
+        {
+            GridSelector.Instance.OnGridClicked -= OnGridSelected;
+            GridSelector.Instance.OnPieceDragEnded -= OnPieceEndDrag;
+
+            if (value)
+            {
+                GridSelector.Instance.OnGridClicked += OnGridSelected;
+                GridSelector.Instance.OnPieceDragEnded += OnPieceEndDrag;
+            }
+        }
+    }
+
     void Start()
     {
         visualPieceSets[0].Init(BaseMovement.PieceColor.WHITE);
         visualPieceSets[1].Init(BaseMovement.PieceColor.BLACK); 
-        GridSelector.Instance.OnSelected -= OnGridSelected;
-        GridSelector.Instance.OnSelected += OnGridSelected;
         ChessRule.Instance.OnGameEnded -= OnGameEnded;
         ChessRule.Instance.OnGameEnded += OnGameEnded;
+        CanRecieveInput = true;
         StartNewTurn();
     }
 
     void OnGameEnded(ChessRule.GameWinner winner)
     {
+        CanRecieveInput = false;
         ChessRule.Instance.OnGameEnded -= OnGameEnded;
-        GridSelector.Instance.OnSelected -= OnGridSelected;
     }
 
     protected override void Init()
@@ -66,27 +82,41 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
         if(selected == null) // 아군 기물을 선택하지 않은 경우.
         {
             if (focusedPiece != null && focusedPiece.AvailableCommands.TryGetValue(selectedGridPosition, out var command))
-            {
-                HideAvailables();
-                focusedPiece = null;
-                GridSelector.Instance.OnSelected -= OnGridSelected;
-                command.Last.OnDo += OnCommandEnd;
-                command.Do();
-            }
+                InvokeCommand(command);
         }
         else
         {
+            // Refreshing Indicators
             HideAvailables();
             focusedPiece = selected;
-            ShowAvaliables();
+            ShowAvaliables(); 
         }
+    }
+
+    void OnPieceEndDrag(Vector2Int dragStartedPosition, Vector2Int dragEndedPosition)
+    {
+        var totalPieceSet = ChessRule.Instance.LocationMap;
+        //var currentTurnOwnerPieceSet = ChessRule.Instance.GetPieceSet(ChessRule.Instance.Turn);
+        var selected = totalPieceSet[dragStartedPosition.x, dragStartedPosition.y];
+        if (selected.Color != ChessRule.Instance.Turn) return;
+        focusedPiece = selected;
+        if (focusedPiece.AvailableCommands.TryGetValue(dragEndedPosition, out var command))
+            InvokeCommand(command);
+    }
+
+    void InvokeCommand(IGameCommand cmd)
+    {
+        HideAvailables();
+        focusedPiece = null;
+        CanRecieveInput = false;
+        cmd.Last.OnDo += OnCommandEnd;
+        cmd.Do();
     }
 
     void OnCommandEnd()
     {
         StartNewTurn();
-        GridSelector.Instance.OnSelected -= OnGridSelected;
-        GridSelector.Instance.OnSelected += OnGridSelected;
+        CanRecieveInput = true;
     }
 
     void ShowAvaliables()

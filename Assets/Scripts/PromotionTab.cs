@@ -16,6 +16,7 @@ public class PromotionTab : MonoBehaviour
     public event PromotionSelectionHandler OnSelected;
     BaseMovement.PieceColor color;
     PhotonView photonView;
+    bool isNetWorkGame;
 
     public void SetColor(BaseMovement.PieceColor color)
     {
@@ -26,6 +27,7 @@ public class PromotionTab : MonoBehaviour
 
     void Awake()
     {
+        isNetWorkGame = GameMode.Instance.Mode == GameMode.GameModeType.Photon;
         selectQueen.onClick.AddListener(SelectQueen_onClick);
         selectBishop.onClick.AddListener(SelectBishop_onClick);
         selectRook.onClick.AddListener(SelectRook_onClick);
@@ -37,28 +39,32 @@ public class PromotionTab : MonoBehaviour
     {
         var queen = new QueenMovement(color, 0, 0);
         OnSelected?.Invoke(queen);
-        photonView.RPC(nameof(SelectQueen_RPC), RpcTarget.Others, null);
+        if (isNetWorkGame)
+            photonView.RPC(nameof(SelectQueen_RPC), RpcTarget.Others, null);
     }
 
     void SelectRook_onClick()
     {
         var rook = new RookMovement(color, 0, 0);
         OnSelected?.Invoke(rook);
-        photonView.RPC(nameof(SelectRook_RPC), RpcTarget.Others, null);
+        if (isNetWorkGame)
+            photonView.RPC(nameof(SelectRook_RPC), RpcTarget.Others, null);
     }
 
     void SelectBishop_onClick()
     {
         var bishop = new BishopMovement(color, 0, 0);
         OnSelected?.Invoke(bishop);
-        photonView.RPC(nameof(SelectBishop_RPC), RpcTarget.Others, null);
+        if (isNetWorkGame)
+            photonView.RPC(nameof(SelectBishop_RPC), RpcTarget.Others, null);
     }
 
     void SelectKnight_onClick()
     {
         var knight = new KnightMovement(color, 0, 0);
         OnSelected?.Invoke(knight);
-        photonView.RPC(nameof(SelectKnight_RPC), RpcTarget.Others, null);
+        if (isNetWorkGame)
+            photonView.RPC(nameof(SelectKnight_RPC), RpcTarget.Others, null);
     }
 
     #region Multiplayer

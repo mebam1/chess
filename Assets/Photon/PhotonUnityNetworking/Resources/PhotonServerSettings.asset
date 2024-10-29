@@ -47,6 +47,7 @@ MonoBehaviour:
   - SelectBishop_RPC
   - SelectRook_RPC
   - SelectQueen_RPC
+  - InvokeEndDragEventRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -32,7 +32,7 @@ public class KingMovement : BaseMovement
 
         var opposite = ChessRule.Instance.GetOppositePieceSet(Color);
         var friendly = ChessRule.Instance.GetPieceSet(Color);
-        var attackers = opposite.GetAttackers(x, y);
+        //var attackers = opposite.GetAttackers(x, y);
 
         foreach (var offset in Offsets)
         {
