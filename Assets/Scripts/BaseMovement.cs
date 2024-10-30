@@ -124,12 +124,11 @@ public abstract class BaseMovement
         
         List<Vector2Int> ret = new();
 
-        // TODO: 나중에 클래스 구조를 고쳐서 If가 필요가 없게 만들 것.
         bool isStraightLine = x1 == x2 || y1 == y2 || Mathf.Abs(x1 - x2) == Mathf.Abs(y1 - y2);
         if (!isStraightLine)
         {
             ret.Add(new Vector2Int(x2, y2));
-            return ret; // 나이트가 GetLine에서 반환값을 받아야 하므로 이를 해결하기 위한 임시 코드. 
+            return ret;
         }
 
         int xOffset = x1 < x2 ? 1 : (x1 == x2 ? 0 : -1);

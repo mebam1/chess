@@ -68,7 +68,7 @@ public class VisualPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         bool isTweening = tween != null && tween.IsPlaying();
         if (isTweening || !GridSelector.Instance.CanTouchScreen) return;
-        Debug.Log("OnBeginDrag");
+        //Debug.Log("OnBeginDrag");
         transform.localScale *= 1.08f;
         dragStartPosition = transform.position;
     }
@@ -77,7 +77,7 @@ public class VisualPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         bool isTweening = tween != null && tween.IsPlaying();
         if (isTweening || !GridSelector.Instance.CanTouchScreen) return;
-        Debug.Log("OnDrag");
+        //Debug.Log("OnDrag");
         FollowMousePosition();
     }
 
@@ -85,7 +85,7 @@ public class VisualPiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         bool isTweening = tween != null && tween.IsPlaying();
         if (isTweening || !GridSelector.Instance.CanTouchScreen) return;
-        Debug.Log("OnEndDrag");
+        //Debug.Log("OnEndDrag");
         transform.localScale = Vector3.one;
         Vector3 dragEndPosition = transform.position;
         transform.position = dragStartPosition;

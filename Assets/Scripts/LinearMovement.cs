@@ -25,6 +25,7 @@ public abstract class LinearMovement : BaseMovement
 
                 if (!IsInsideOfBoard(xPos, yPos)) break;
                 var encountered = ChessRule.Instance.LocationMap[xPos, yPos];
+
                 if (encountered == null)
                 {
                     if (!passed)
@@ -35,9 +36,10 @@ public abstract class LinearMovement : BaseMovement
                     if (!passed)
                     {
                         attackMap[xPos, yPos] = true;
-                        if(encountered is not KingMovement) // King은 그대로 무시하고 통과한다.
+                        passed = true;
+                        if (encountered is not KingMovement)
                         {
-                            passed = true;
+                            // King은 그대로 무시하고 통과한다.
                             pinnerCandidate = encountered;
                         }
                     }

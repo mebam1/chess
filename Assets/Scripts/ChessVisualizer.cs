@@ -125,7 +125,7 @@ public class ChessVisualizer : Singleton<ChessVisualizer>
         foreach(var cell in focusedPiece.Availables)
         {
             var indicator = indicatorPool.Get();
-            indicator.transform.position = new Vector3(cell.x, 3f, cell.y);
+            indicator.transform.position = new Vector3(cell.x, indicator.transform.position.y, cell.y);
             showingIndicators.Add(indicator);
         }
     }
