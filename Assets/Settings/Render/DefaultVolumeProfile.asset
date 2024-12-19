@@ -15,10 +15,10 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   highlights:
     m_OverrideState: 1
-    m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
   balance:
     m_OverrideState: 1
     m_Value: 0
@@ -53,13 +53,13 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.92398274, z: 0.9278905, w: 0}
   midtones:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 0.84318084, y: 1, z: 0.99643475, w: 0.017108638}
   highlights:
     m_OverrideState: 1
-    m_Value: {x: 1, y: 1, z: 1, w: 0}
+    m_Value: {x: 1, y: 0.9894422, z: 0.9973606, w: 0}
   shadowsStart:
     m_OverrideState: 1
     m_Value: 0
@@ -477,13 +477,13 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.35
   smoothness:
     m_OverrideState: 1
     m_Value: 0.2
   rounded:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1
 --- !u!114 &1684937809574081120
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -634,7 +634,7 @@ MonoBehaviour:
   active: 1
   temperature:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: -1
   tint:
     m_OverrideState: 1
     m_Value: 0
@@ -653,10 +653,10 @@ MonoBehaviour:
   active: 1
   normalBias:
     m_OverrideState: 1
-    m_Value: 0.33
+    m_Value: 0.05
   viewBias:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.1
   scaleBiasWithMinProbeDistance:
     m_OverrideState: 1
     m_Value: 0
@@ -681,6 +681,9 @@ MonoBehaviour:
   skyOcclusionIntensityMultiplier:
     m_OverrideState: 1
     m_Value: 1
+  worldOffset:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0, z: 0}
 --- !u!114 &6449041973219395068
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -699,7 +702,7 @@ MonoBehaviour:
     m_Value: 1
   threshold:
     m_OverrideState: 1
-    m_Value: 0.9
+    m_Value: 0.8
   intensity:
     m_OverrideState: 1
     m_Value: 0

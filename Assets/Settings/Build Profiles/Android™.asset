@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 15003, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: "Android\u2122"
   m_EditorClassIdentifier: 
+  m_AssetVersion: 1
   m_BuildTarget: 13
   m_Subtarget: 0
   m_PlatformId: b9b35072a6f44c2e863f17467ea3dc13
   m_PlatformBuildProfile:
     rid: 6635661709307805697
+  m_OverrideGlobalSceneList: 0
   m_Scenes:
   - m_enabled: 1
     m_path: Assets/Scenes/Loading.unity
@@ -74,6 +76,7 @@ MonoBehaviour:
     - line: '|   m_StereoRenderingPath: 0'
     - line: '|   m_ActiveColorSpace: 0'
     - line: '|   unsupportedMSAAFallback: 0'
+    - line: '|   m_SpriteBatchMaxVertexCount: 65535'
     - line: '|   m_SpriteBatchVertexThreshold: 300'
     - line: '|   m_MTRendering: 1'
     - line: '|   mipStripping: 0'
@@ -95,19 +98,18 @@ MonoBehaviour:
     - line: '|   androidRenderOutsideSafeArea: 1'
     - line: '|   androidUseSwappy: 1'
     - line: '|   androidBlitType: 0'
-    - line: '|   androidResizableWindow: 0'
+    - line: '|   androidResizeableActivity: 0'
     - line: '|   androidDefaultWindowWidth: 1920'
     - line: '|   androidDefaultWindowHeight: 1080'
     - line: '|   androidMinimumWindowWidth: 400'
     - line: '|   androidMinimumWindowHeight: 300'
     - line: '|   androidFullscreenMode: 1'
     - line: '|   androidAutoRotationBehavior: 1'
-    - line: '|   androidApplicationEntry: 1'
     - line: '|   androidPredictiveBackSupport: 0'
+    - line: '|   androidApplicationEntry: 1'
     - line: '|   defaultIsNativeResolution: 1'
     - line: '|   macRetinaSupport: 1'
     - line: '|   runInBackground: 1'
-    - line: '|   captureSingleScreen: 0'
     - line: '|   muteOtherAudioSources: 0'
     - line: '|   Prepare IOS For Recording: 0'
     - line: '|   Force IOS Speakers When Recording: 0'
@@ -517,6 +519,7 @@ MonoBehaviour:
     - line: '|   playModeTestRunnerEnabled: 0'
     - line: '|   runPlayModeTestAsEditModeTest: 0'
     - line: '|   actionOnDotNetUnhandledException: 1'
+    - line: '|   editorGfxJobOverride: 1'
     - line: '|   enableInternalProfiler: 0'
     - line: '|   logObjCUncaughtExceptions: 1'
     - line: '|   enableCrashReportAPI: 0'
@@ -920,6 +923,8 @@ MonoBehaviour:
     - line: '|   platformRequiresReadableAssets: 0'
     - line: '|   virtualTexturingSupportEnabled: 0'
     - line: '|   insecureHttpOption: 0'
+    - line: '|   androidVulkanDenyFilterList: []'
+    - line: '|   androidVulkanAllowFilterList: []'
     - line: '| '
   references:
     version: 2
